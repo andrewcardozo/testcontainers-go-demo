@@ -3,6 +3,7 @@ package customer
 import (
 	"context"
 	"log"
+	"os"
 	"testing"
 
 	"testcontainers-go-demo/testhelpers"
@@ -19,6 +20,8 @@ type CustomerRepoTestSuite struct {
 }
 
 func (suite *CustomerRepoTestSuite) SetupSuite() {
+	//variable must be set when using rancher
+	os.Setenv("TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE", "/var/run/docker.sock")
 	suite.ctx = context.Background()
 	pgContainer, err := testhelpers.CreatePostgresContainer(suite.ctx)
 	if err != nil {

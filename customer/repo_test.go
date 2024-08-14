@@ -2,6 +2,7 @@ package customer
 
 import (
 	"context"
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
@@ -13,6 +14,7 @@ import (
 )
 
 func TestCustomerRepository(t *testing.T) {
+	os.Setenv("TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE", "/var/run/docker.sock")
 	ctx := context.Background()
 
 	pgContainer, err := postgres.Run(ctx,

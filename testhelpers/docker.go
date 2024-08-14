@@ -89,7 +89,7 @@ func CreatePostgresDockerContainer(ctx context.Context, t *testing.T) (*Postgres
 
 	t.Cleanup(func() {
 		log.Printf("removing container with id %s", resp.ID)
-		if err := teardownDockerContainer(ctx, resp.ID); err != nil {
+		if err := teardownDockerContainer(ctx, cli, resp.ID); err != nil {
 			log.Fatalf("error terminating postgres container: %s", err)
 		}
 	})
@@ -111,12 +111,7 @@ func CreatePostgresDockerContainer(ctx context.Context, t *testing.T) (*Postgres
 	}, nil
 }
 
-func teardownDockerContainer(ctx context.Context, containerId string) error {
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		log.Fatalf("Error creating Docker client: %v", err)
-	}
-
+func teardownDockerContainer(ctx context.Context, cli *client.Client, containerId string) error {
 	if err := cli.ContainerStop(ctx, containerId, container.StopOptions{}); err != nil {
 		return err
 	}

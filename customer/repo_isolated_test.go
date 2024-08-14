@@ -3,6 +3,7 @@ package customer
 import (
 	"context"
 	"log"
+	"os"
 	"testing"
 
 	"testcontainers-go-demo/testhelpers"
@@ -11,6 +12,8 @@ import (
 )
 
 func GetRepository(t *testing.T, ctx context.Context) (*Repository, error) {
+	//variable must be set when using rancher
+	os.Setenv("TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE", "/var/run/docker.sock")
 	pgContainer, err := testhelpers.CreatePostgresContainer(ctx)
 	if err != nil {
 		return nil, err
